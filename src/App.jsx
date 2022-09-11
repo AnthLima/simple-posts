@@ -12,14 +12,8 @@ function App() {
       <div className={styles.wrapper}>
         <Sidebar/>    
         <main>
-          <Post 
-            author={'Ada'}
-            description={'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex ratione odit magni placeat tempore reiciendis quia? Quasi totam magni doloribus tenetur quibusdam fuga praesentium, commodi iusto mollitia porro cupiditate dolores!'}
-          />
-          <Post 
-            author={'Jordan'}
-            description={'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex ratione odit magni placeat tempore reiciendis quia? Quasi totam magni doloribus tenetur quibusdam fuga praesentium, commodi iusto mollitia porro cupiditate dolores!'}
-          />
+          <Post />
+          <Post />
         </main>    
       </div>
     </div>
