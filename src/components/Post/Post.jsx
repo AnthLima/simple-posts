@@ -1,40 +1,63 @@
+import { useState } from 'react';
 import styles from './Post.module.css';
 import { Comment } from '../Comment/Comment';
 import { Avatar } from '../Avatar/Avatar';
-export function Post({author, description}) {
+import { LinkedinLogo } from 'phosphor-react';
+export function Post({author, publishedAt, content }) {
+    const [comments, setComments] = useState([]);
+    
+    const [newCommentText, setNewCommentText] = useState('');
+    
+    function handleCreateNewComment(e) {
+        e.preventDefault();
+        
+        setComments([...comments, newCommentText]);
+        setNewCommentText('');
+    }
+
+    function handleNewCommentChange (e) {
+        setNewCommentText(e.target.value);
+        
+    }
+
+    const publishedDateFomatted = new Intl.DateTimeFormat('en-Us', {
+        day: '2-digit',
+        month: 'long',
+        hour: '2-digit',
+        minute: '2-digit'
+    }).format(publishedAt);
+
     return (
         <article className={styles.post}>
             <header>
                 <div className={styles.author}> 
-                    <Avatar src="https://github.com/yyx990803.png"/>
+                    <Avatar src={author.avatarUrl}/>
                     <div className={styles.authorInfo}>
-                        <strong>{author}</strong>
-                        <span>{description}</span>
+                        <strong>{author.name}</strong>
+                        <span>{author.role}</span>
                     </div>
                 </div>
-                <time title="May 11 at 08:13h" dateTime="2022-05-11 08:13:33">
-                    Publish 1hr ago
+                <time title={publishedDateFomatted} dateTime={publishedAt.toISOString()}>
+                    {publishedDateFomatted}
                 </time>
             </header>
 
             <div className={styles.content}>
-                <p>Hey guys 👋</p>
-
-                <p>I just uploaded another project in my portfolio. It's a project I did at NLW Return, Rocketseat event. The name of the project is DoctorCare 🚀</p>
-
-                <p><a href='#'>👉{' '} jane.design/doctorcare</a></p>
-
-                <p>
-                    <a href='#'>#newproject </a>{' '}
-                    <a href='#'>#nlw </a>{' '}
-                    <a href='#'>#rocketseat</a>{' '}
-                </p>
-                
+                {content.map(line => {
+                    if(line.type === 'paragraph'){
+                        return <p key={line.content} >{line.content}</p>
+                    } else if(line.type === 'link'){
+                        return  <p key={line.content}><a href='#'>{line.content}</a></p>
+                    }
+                })}
             </div>
-            <form className={styles.commentForm}>
+            <form onSubmit={handleCreateNewComment} className={styles.commentForm}>
                 <strong>Deixe seu feedback</strong>
 
-                <textarea 
+                <textarea
+                    onChange={handleNewCommentChange} 
+                    name="comment"
+                    value={newCommentText}
                     placeholder='Deixe um comentário'
                 />
 
@@ -45,9 +68,9 @@ export function Post({author, description}) {
 
             </form>
             <div className={styles.commentList}>
-                <Comment/>
-                <Comment/>
-                <Comment/>
+                {comments.map(comment => {
+                    return <Comment key={comment} content={comment} />
+                })}
 
             </div>
         </article>
