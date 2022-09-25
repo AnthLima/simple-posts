@@ -20,6 +20,13 @@ export function Post({author, publishedAt, content }) {
         
     }
 
+    function deleteComment(commentToDelete){
+        const commentsWithoutDeleteOne = comments.filter( comment => {
+            return comment != commentToDelete;
+        })
+        setComments(commentsWithoutDeleteOne);
+    }
+
     const publishedDateFomatted = new Intl.DateTimeFormat('en-Us', {
         day: '2-digit',
         month: 'long',
@@ -69,7 +76,7 @@ export function Post({author, publishedAt, content }) {
             </form>
             <div className={styles.commentList}>
                 {comments.map(comment => {
-                    return <Comment key={comment} content={comment} />
+                    return <Comment key={comment} content={comment} onDeleteComment={deleteComment} />
                 })}
 
             </div>
